@@ -1,23 +1,26 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 // RecordType
 struct RecordType
 {
-	int		id;
+	int	id;
 	char	name;
-	int		order; 
+	int	order;
 };
 
 // Fill out this structure
 struct HashType
 {
-
+	struct RecordType* pRecord;
+	int size;
+	struct HashType* next;
 };
 
 // Compute the hash function
 int hash(int x)
-{
-
+{	//size of the hash table is 23
+	return x % 23;
 }
 
 // parses input file to an integer array
@@ -75,12 +78,17 @@ void printRecords(struct RecordType pData[], int dataSz)
 // index x -> id, name, order -> id, name, order ....
 void displayRecordsInHash(struct HashType *pHashArray, int hashSz)
 {
-	int i;
+    int i;
 
-	for (i=0;i<hashSz;++i)
-	{
-		// if index is occupied with any records, print all
-	}
+    for (i = 0; i < hashSz; ++i)
+    {
+        if (pHashArray[i].pRecord != NULL)
+        {
+            printf("index %d -> ", i);
+            printf("%d, %c, %d -> ", pHashArray[i].pRecord->id, pHashArray[i].pRecord->name, pHashArray[i].pRecord->order);
+            printf("\n");
+        }
+    }
 }
 
 int main(void)
