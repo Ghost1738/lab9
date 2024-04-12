@@ -90,6 +90,27 @@ void displayRecordsInHash(struct HashType *pHashArray, int hashSz)
         }
     }
 }
+// Insert record into the hash table
+void insertRecord(struct HashType *pHashArray, struct RecordType *pRecord, int hashSz)
+{
+    int index = hash(pRecord->id);
+
+    if (pHashArray[index].pRecord == NULL)
+    {
+        pHashArray[index].pRecord = pRecord;
+    }
+    else
+    {
+        struct HashType *current = &pHashArray[index];
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = (struct HashType *)malloc(sizeof(struct HashType));
+        current->next->pRecord = pRecord;
+        current->next->next = NULL;
+    }
+}
 
 int main(void)
 {
@@ -99,4 +120,20 @@ int main(void)
 	recordSz = parseData("input.txt", &pRecords);
 	printRecords(pRecords, recordSz);
 	// Your hash implementation
+	// Initialize hash table
+	struct HashType *pHashArray = (struct HashType *)malloc(23 * sizeof(struct HashType));
+	for (int i = 0; i < 23; i++)
+	{
+		pHashArray[i].pRecord = NULL;
+		pHashArray[i].next = NULL;
+	}
+
+	// Insert records into the hash table
+	for (int i = 0; i < recordSz; i++)
+	{
+		insertRecord(pHashArray, &pRecords[i], 23);
+	}
+
+	// Display records in the hash table
+	displayRecordsInHash(pHashArray, 23);
 }
